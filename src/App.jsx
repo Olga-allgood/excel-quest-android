@@ -1112,9 +1112,7 @@ function App() {
               <div className="player-hair" />
             </div>
 
-            <div className="player-body">
-              <span>XL</span>
-            </div>
+            <div className="player-body" />
 
             <div className="player-feet">
               <span />
