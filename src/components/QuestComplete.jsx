@@ -7,7 +7,7 @@ function QuestComplete() {
 
       <div className="completion-content">
         <p>
-          Excel Quest Complete
+          Formula Quest Complete
         </p>
 
         <h2>

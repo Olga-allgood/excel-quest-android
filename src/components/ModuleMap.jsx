@@ -66,7 +66,7 @@ function ModuleMap({
     <main className="module-map">
       <header className="module-map-header">
         <p className="eyebrow">
-          Excel Quest
+          Formula Quest
         </p>
 
         <h1>Formula Adventure</h1>
@@ -98,7 +98,7 @@ function ModuleMap({
 
       <section
         className="module-grid"
-        aria-label="Excel Quest modules"
+        aria-label="Formula Quest modules"
       >
         {modules.map((module, index) => (
           <ModuleCard

@@ -854,7 +854,7 @@ function App() {
         <header className="game-header">
           <div>
             <p className="eyebrow">
-              Excel Quest
+              Formula Quest
             </p>
 
             <h1>
@@ -912,7 +912,7 @@ function App() {
       <header className="game-header">
         <div>
           <p className="eyebrow">
-            Excel Quest
+            Formula Quest
           </p>
 
           <h1>
@@ -1106,7 +1106,7 @@ function App() {
               left: `${playerX}px`,
               bottom: "70px",
             }}
-            aria-label="Excel Quest player"
+            aria-label="Formula Quest player"
           >
             <div className="player-head">
               <div className="player-hair" />
