@@ -66,10 +66,10 @@ function ModuleMap({
     <main className="module-map">
       <header className="module-map-header">
         <p className="eyebrow">
-          Formula Quest
+          INTERACTIVE FORMULA PRACTICE
         </p>
 
-        <h1>Formula Adventure</h1>
+        <h1>Formula Quest</h1>
 
         <p>
           Build workplace Excel skills by completing five
@@ -129,16 +129,27 @@ function ModuleMap({
       )}
 
       <footer className="module-map-footer">
-        <span>© Olga Orlova</span>
-        <span
-          className="footer-divider"
-          aria-hidden="true"
-        >
-          ·
-        </span>
-        <span>
-          Technical Instructional Designer
-        </span>
+        <div className="footer-credit">
+          <span>© Olga Orlova</span>
+
+          <span
+            className="footer-divider"
+            aria-hidden="true"
+          >
+            ·
+          </span>
+
+          <span>
+            Technical Instructional Designer
+          </span>
+        </div>
+
+        <p className="trademark-notice">
+          Microsoft Excel is a trademark of the Microsoft
+          group of companies. Formula Quest is an independent
+          learning application and is not affiliated with or
+          endorsed by Microsoft.
+        </p>
       </footer>
     </main>
   );
