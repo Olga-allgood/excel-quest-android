@@ -72,8 +72,8 @@ function ModuleMap({
         <h1>Formula Quest</h1>
 
         <p>
-          Build workplace Excel skills through guided practice
-          and hands-on formula building.
+          Develop practical Excel skills through guided
+          practice and hands-on formula entry.
         </p>
       </header>
 
