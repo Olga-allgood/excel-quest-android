@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import ExcelRangeVisual from "./ExcelRangeVisual";
 
 function ExcelComparisonVisual({
@@ -64,6 +65,40 @@ function ExcelComparisonVisual({
   );
 }
 
+/* =========================================================
+   SHUFFLE ANSWERS
+========================================================= */
+
+function shuffleAnswers(answers) {
+  const shuffled = [...answers];
+
+  /*
+   * Fisher-Yates shuffle.
+   *
+   * We shuffle a COPY so the original challenge data
+   * is never modified.
+   */
+  for (
+    let index = shuffled.length - 1;
+    index > 0;
+    index -= 1
+  ) {
+    const randomIndex = Math.floor(
+      Math.random() * (index + 1)
+    );
+
+    [
+      shuffled[index],
+      shuffled[randomIndex],
+    ] = [
+      shuffled[randomIndex],
+      shuffled[index],
+    ];
+  }
+
+  return shuffled;
+}
+
 function ChallengeModal({
   challenge,
   selectedAnswer,
@@ -78,6 +113,7 @@ function ChallengeModal({
   }
 
   const {
+    id,
     title,
     formula,
     prompt,
@@ -86,6 +122,21 @@ function ChallengeModal({
     answers = [],
     moduleTitle,
   } = challenge;
+
+  /*
+   * Shuffle the answer choices ONCE for this challenge.
+   *
+   * The dependency uses the challenge ID rather than
+   * selectedAnswer or feedback, so choosing an answer
+   * will NOT cause the buttons to move around.
+   *
+   * When the learner reaches a different challenge,
+   * the answers are shuffled again.
+   */
+  const shuffledAnswers = useMemo(
+    () => shuffleAnswers(answers),
+    [id]
+  );
 
   /*
    * Use the comparison layout when the challenge
@@ -137,7 +188,7 @@ function ChallengeModal({
           ))}
 
         <div className="answers">
-          {answers.map((answer) => {
+          {shuffledAnswers.map((answer) => {
             const isSelected =
               selectedAnswer === answer;
 

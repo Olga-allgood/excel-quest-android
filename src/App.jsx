@@ -78,6 +78,15 @@ function App() {
 
   const movementTimer = useRef(null);
 
+  /*
+   * Measure the actual game viewport instead of assuming a
+   * desktop-sized camera. This keeps the player visible on
+   * phones, tablets, the Android emulator, and desktop.
+   */
+  const gameWorldRef = useRef(null);
+  const [gameViewportWidth, setGameViewportWidth] =
+    useState(1000);
+
   /* =========================================================
      LEVEL 2 — RETRIEVAL PRACTICE
   ========================================================= */
@@ -480,14 +489,69 @@ function App() {
   ]);
 
   /* =========================================================
+     GAME VIEWPORT SIZE
+  ========================================================= */
+
+  useEffect(() => {
+    const gameWorld = gameWorldRef.current;
+
+    if (!gameWorld) {
+      return;
+    }
+
+    const updateViewportWidth = () => {
+      const width = gameWorld.clientWidth;
+
+      if (width > 0) {
+        setGameViewportWidth(width);
+      }
+    };
+
+    updateViewportWidth();
+
+    const resizeObserver = new ResizeObserver(
+      updateViewportWidth
+    );
+
+    resizeObserver.observe(gameWorld);
+
+    window.addEventListener(
+      "resize",
+      updateViewportWidth
+    );
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener(
+        "resize",
+        updateViewportWidth
+      );
+    };
+  }, [screen, activeModuleId]);
+
+  /* =========================================================
      CAMERA
   ========================================================= */
+
+  /*
+   * Keep the player around 42% from the left edge once the
+   * camera starts following them. On desktop this preserves
+   * the original ~420px camera position; on mobile it scales
+   * to the actual visible game-world width.
+   */
+  const playerCameraOffset =
+    gameViewportWidth * 0.42;
+
+  const maxCameraX = Math.max(
+    0,
+    worldWidth - gameViewportWidth
+  );
 
   const cameraX = Math.max(
     0,
     Math.min(
-      playerX - 420,
-      worldWidth - 1000
+      playerX - playerCameraOffset,
+      maxCameraX
     )
   );
 
@@ -559,27 +623,16 @@ function App() {
   ========================================================= */
 
   const continueGame = () => {
-    const completedId =
-      currentChallengeId;
+    /*
+     * Close the completed challenge without automatically moving
+     * the player. The learner remains at the recovered checkpoint
+     * and chooses when to walk toward the next formula.
+     */
+    stopMoving();
 
     setCurrentChallengeId(null);
     setSelectedAnswer("");
     setFeedback("");
-
-    const completedCheckpoint =
-      checkpoints.find(
-        ({ challenge }) =>
-          challenge.id === completedId
-      );
-
-    if (completedCheckpoint) {
-      setPlayerX(
-        Math.min(
-          completedCheckpoint.x + 95,
-          worldWidth - 100
-        )
-      );
-    }
   };
 
   /* =========================================================
@@ -954,7 +1007,10 @@ function App() {
         </div>
       </section>
 
-      <section className="game-world">
+      <section
+        className="game-world"
+        ref={gameWorldRef}
+      >
         <div
           className="world"
           style={{
